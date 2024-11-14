@@ -1,4 +1,27 @@
 function main() {
+  const langToCompile = `import os
+import re
+
+langToCompile = r\'''${quine() + "\nmain()"}\'''
+
+def count_files_with_substring(directory, regex):
+  count = 0
+  for filename in os.listdir(directory):
+    if re.match(regex, filename):
+      count += 1
+  return count
+
+directory = os.getcwd()  
+regex = r"^solution.*\.js$" 
+
+matching_file_count = count_files_with_substring(directory, regex)
+filename = f"solution{matching_file_count + 1}.js"
+
+with open(filename, 'w') as f:
+  f.write(langToCompile)
+
+print(f"Saved to {filename}")`;
+
   let fs = require("fs");
 
   const path = require("path");
@@ -16,7 +39,7 @@ function main() {
   }
 
   const directoryPath = "./";
-  const substringToMatch = /^solution.*\.js$/;
+  const substringToMatch = /^solution.*\.py$/;
 
   const matchingFileCount = countFilesWithSubstring(
     directoryPath,
@@ -27,26 +50,11 @@ function main() {
     return main.toString();
   }
 
-  fs.appendFile(
-    `solution${matchingFileCount > 0 ? matchingFileCount + 1 : ""}.js`,
-    quine() + "\nmain()",
-    (err) => {
-      if (err) throw err;
-      console.log("Saved!");
-    }
-  );
+  const filename = `solution${matchingFileCount + 1}.py`;
+
+  fs.appendFile(filename, langToCompile, (err) => {
+    if (err) throw err;
+    console.log(`Saved to ${filename}!`);
+  });
 }
 main();
-// create py code
-
-// create js code
-
-// create py file with py code
-// py code has placeholder for js code
-
-// programatically find how many files with the same name are in a directory
-// +1 to their number
-
-// use regexp to find number of files whose name starts with 'solution' and ends with '.py' or '.js' for py and js files
-
-// remove all of this at the end
