@@ -15,7 +15,7 @@ directory = os.getcwd()
 regex = r"^solution.*\.js$" 
 
 matching_file_count = count_files_with_substring(directory, regex)
-filename = f"solution{matching_file_count + 1}.js"
+filename = f"solution{matching_file_count + 1 if matching_file_count > 0 else ''}.js"
 
 with open(filename, 'w') as f:
   f.write(langToCompile)
@@ -50,7 +50,9 @@ print(f"Saved to {filename}")`;
     return main.toString();
   }
 
-  const filename = `solution${matchingFileCount + 1}.py`;
+  const filename = `solution${
+    matchingFileCount > 0 ? matchingFileCount + 1 : ""
+  }.py`;
 
   fs.appendFile(filename, langToCompile, (err) => {
     if (err) throw err;
